@@ -17,6 +17,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     private Environment environment = globals;
     private final Map<Expr, Integer> locals = new HashMap<>();
 
+    private final int limit = 100;
+
     Interpreter() {
         globals.define("clock", new LoxCallable() {
 
@@ -362,7 +364,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitWhileStmt(Stmt.While stmt) {
+        int count = 0;
         while(isTruthy(evaluate(stmt.condition))) {
+             if (count >= limit ) {
+                Lox.infiniteLoopError();
+                return null;
+             }
+            count++;
             execute(stmt.body);
         }
         return null;

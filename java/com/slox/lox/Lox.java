@@ -84,4 +84,9 @@ public class Lox {
         System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
         hadRuntimeError = true;
     }
+
+    static void infiniteLoopError() {
+        System.err.println("Cannot run loop more than 100 times.");
+        hadRuntimeError = true;
+    }
 }
